@@ -5,6 +5,7 @@ import Header from "./pages/Header";
 const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
+const Profile = lazy(() => import("./pages/Profile"));
 
 const App: Component = () => {
   return (
@@ -15,6 +16,7 @@ const App: Component = () => {
           <Route path="/" component={Home} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
+          <Route path="/profile" component={Profile} />
       </Routes>
     </>
   );

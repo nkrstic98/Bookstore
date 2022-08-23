@@ -11,6 +11,10 @@ export function fetchUser() {
     }
 }
 
+export function deleteUser() {
+    setUser(null);
+}
+
 const [user, setUser] = createSignal<User|null>(null);
 
 const Header: Component = () => {
