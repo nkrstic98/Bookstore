@@ -2,6 +2,7 @@ type User = {
     firstname: string;
     lastname: string;
     email: string;
+    username: string;
     password: string;
     phone: string;
     address: string;
@@ -13,6 +14,7 @@ var userList: Array<User> = [
         firstname: "Nikola",
         lastname: "Krstic",
         email: "nikola.krstic@gmail.com",
+        username: "nikolak98",
         password: "nikola.krstic",
         phone: "063348946",
         address: "Mihajla Petrovica Alasa 9/7 Pancevo",
@@ -22,6 +24,7 @@ var userList: Array<User> = [
         firstname: "Katarina",
         lastname: "Krstic",
         email: "katarina.krstic@gmail.com",
+        username: "kacak04",
         password: "katarina.krstic",
         phone: "0648674945",
         address: "Mihajla Petrovica Alasa 9/7 Pancevo",
@@ -40,7 +43,19 @@ const userModel = () => {
         return null;
     }
 
-    return { userLogin }
+    const userRegister = (user: User) => {
+        for (let userElem of userList) {
+            if(userElem.email == user.email || userElem.username == user.username) {
+                return false;
+            }
+        }
+
+        userList.push(user);
+
+        return true;
+    }
+
+    return { userLogin, userRegister }
 }
 
 export {userModel};

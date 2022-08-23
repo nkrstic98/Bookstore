@@ -4,6 +4,7 @@ import Header from "./pages/Header";
 
 const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
 
 const App: Component = () => {
   return (
@@ -13,6 +14,7 @@ const App: Component = () => {
       <Routes>
           <Route path="/" component={Home} />
           <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
       </Routes>
     </>
   );

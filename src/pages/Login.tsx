@@ -86,14 +86,14 @@ const Login: Component = () => {
                     <Card>
                         <Card.Body>
                             <Form noValidate validated={validated()} onSubmit={handleSubmit}>
-                                <Form.Group class="mb-4" controlId="validationCustom04">
-                                    <Show
-                                        when={user() == null && loginAttempted()}
-                                    >
-                                        <Form.Group class="mb-4" style={"text-align:center;"} controlId="validationCustom05">
-                                            <p class="text-danger">{"Pogresno uneti korisnicko ime ili lozinka. Pokusajte ponovo"}</p>
-                                        </Form.Group>
-                                    </Show>
+                                <Show
+                                    when={user() == null && loginAttempted()}
+                                >
+                                    <Form.Group class="mb-4" style={"text-align:center;"} controlId="validationCustom03">
+                                        <p class="text-danger">{"Pogresno uneti korisnicko ime ili lozinka. Pokusajte ponovo"}</p>
+                                    </Form.Group>
+                                </Show>
+                                <Form.Group class="mb-4" controlId="validationCustom01">
                                     <Form.Label>Email adresa</Form.Label>
                                     <Form.Control
                                         type="text"
@@ -106,7 +106,7 @@ const Login: Component = () => {
                                         Email adresa je obavezno polje!
                                     </Form.Control.Feedback>
                                 </Form.Group>
-                                <Form.Group class="mb-4" controlId="validationCustom05">
+                                <Form.Group class="mb-4" controlId="validationCustom02">
                                     <Form.Label>Lozinka</Form.Label>
                                     <Form.Control
                                         type="password"
@@ -119,7 +119,7 @@ const Login: Component = () => {
                                         Lozinka je obavezno polje!
                                     </Form.Control.Feedback>
                                 </Form.Group>
-                                <Form.Group class="mb-4" style={"text-align:center;"} controlId="validationCustom05">
+                                <Form.Group class="mb-4" style={"text-align:center;"} controlId="validationCustom04">
                                     <Button class="text-center" type="submit">Uloguj se</Button>
                                 </Form.Group>
                                 <Form.Group class="mb-4" style={"text-align:center;"} controlId="validationCustom05">
