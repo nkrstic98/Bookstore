@@ -52,6 +52,8 @@ const userModel = () => {
 
         userList.push(user);
 
+        console.log(userList);
+
         return true;
     }
 

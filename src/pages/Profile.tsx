@@ -135,6 +135,7 @@ const Profile: Component = () => {
                 setIsUpdateEnabled(false);
                 setIsPasswordEnabled(false);
                 setIsCheckboxEnabled(false);
+                setDoPasswordMatch(true);
             }
             else {
                 setUpdateAttempted(true);
@@ -190,14 +191,7 @@ const Profile: Component = () => {
                             <Card.Body>
                                 <Form noValidate validated={validated()} onSubmit={handleSubmit}>
                                     <Show
-                                        when={user() == null && updateAttempted()}
-                                    >
-                                        <Form.Group class="mb-4" style={"text-align:center;"} controlId="validationCustom11">
-                                            <p class="text-danger">{"Email ili korisnicno ime su povezani sa postojecim nalogom!"}</p>
-                                        </Form.Group>
-                                    </Show>
-                                    <Show
-                                        when={!doPasswordMatch()}
+                                        when={isPasswordEnabled() && !doPasswordMatch()}
                                     >
                                         <Form.Group class="mb-4" style={"text-align:center;"} controlId="validationCustom11">
                                             <p class="text-danger">{"Lozinka i potvrda lozinke se ne poklapaju. Pokusajte ponovo"}</p>
