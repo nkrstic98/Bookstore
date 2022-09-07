@@ -6,19 +6,20 @@ type Book = {
     image: string;
     yearPublished: string;
     numberOfPages: string;
-    averageGrade: string;
-    commentList: Array<BookComment>;
+    averageGrade: number;
+    commentList: BookComment[];
     isOnPromotion: boolean;
 };
 
 type BookComment = {
-    grade: string;
+    grade: number;
     title: string;
     username: string;
     text: string;
+    date: string;
 };
 
-var bookList: Array<Book> = [
+var bookList: Book[] = [
     {
         id: 1,
         title: "Majstor i Margarita",
@@ -31,7 +32,7 @@ var bookList: Array<Book> = [
         image: "majstor_i_margarita",
         yearPublished: "2020.",
         numberOfPages: "519",
-        averageGrade: "",
+        averageGrade: 0,
         commentList: [],
         isOnPromotion: false,
     },
@@ -48,7 +49,7 @@ var bookList: Array<Book> = [
         image: "gozba_za_vrane_1",
         yearPublished: "2006.",
         numberOfPages: "380",
-        averageGrade: "",
+        averageGrade: 0,
         commentList: [],
         isOnPromotion: false,
     },
@@ -61,10 +62,10 @@ var bookList: Array<Book> = [
             'Za to vreme, dok zemljom haraju odmetničke družine, dvor u Kraljevoj luci tone sve dublje u vrtlog izdajstava i spletki. A niko od igrača i ne sluti da je u igru prestola stupila nova, nepredvidljiva i neobuzdana sila, koja preti da poremeti i najpažljivije pripremljene planove...<br>\n' +
             '<br>\n' +
             'Gozba za vrane je u punom jeku.</div>',
-        image: "gozba_za_vrane_1",
+        image: "gozba_za_vrane_2",
         yearPublished: "2006.",
         numberOfPages: "416",
-        averageGrade: "",
+        averageGrade: 0,
         commentList: [],
         isOnPromotion: false,
     },
@@ -81,7 +82,7 @@ var bookList: Array<Book> = [
         image: "igra_prestola",
         yearPublished: "2003.",
         numberOfPages: "655",
-        averageGrade: "",
+        averageGrade: 0,
         commentList: [],
         isOnPromotion: false,
     },
@@ -102,7 +103,7 @@ var bookList: Array<Book> = [
         image: "oluja_maceva_1",
         yearPublished: "2004.",
         numberOfPages: "535",
-        averageGrade: "",
+        averageGrade: 0,
         commentList: [],
         isOnPromotion: false,
     },
@@ -119,7 +120,7 @@ var bookList: Array<Book> = [
         image: "oluja_maceva_2",
         yearPublished: "2004.",
         numberOfPages: "510",
-        averageGrade: "",
+        averageGrade: 0,
         commentList: [],
         isOnPromotion: false,
     },
@@ -139,8 +140,26 @@ var bookList: Array<Book> = [
         image: "ples_sa_zmajevima_1",
         yearPublished: "2012.",
         numberOfPages: "440",
-        averageGrade: "",
-        commentList: [],
+        averageGrade: 0,
+        commentList: [
+            {
+                date: "14.09.2021.",
+                title: "Ples sa zmajevima - deo prvi: Snovi i prah",
+                username: "ijovanovic",
+                grade: 4,
+                text: "Prvi deo Plesa sa zmajevima nam vraća ranije zapostavljene likove.\n" +
+                    "Na početku ove knjige, nema preterano bitnih dešavanja i radnja teče sporije. Iza Zida se sakupljaju mračne sile, kao što svi znamo, a Tuđini rastu u brojkama, svakog dana.\n" +
+                    "Biću iskren, ova mi se knjiga manje dopala od Gozbe za vrane. Razlog je prilično jednostavan. Uprkos tome što Martin sjajno piše, meni su problem bili uglovi pripovedanja. Više mi se dopadaju dešavanja iz Kraljeve luke, u odnosu na Sever i Zid.\n" +
+                    "Opisi i dalje dominiraju, pa u jednom času možete posetiti Bela sidrišta i sedeti kod fontane Ribonogog ili zajedno sa Tirionom posmatrati desetak vrsta kornjača koje žive u Velikoj Rojni. U sledećem momentu možete se zateći daleko iza Zida, dok vam se prsti i celo telo lede, a sa lica vam vise ledenice. Možete naučiti da po mirisu razlikujete gradove i luke u Vesterosu. Bilo da je to Starigrad, sav cvetan, kao naparfemisana udovica, ili možda Lanisgrad sa mirisom mleka i dimom u kosi.",
+            },
+            {
+                date: "20.09.2017.",
+                title: "Ples sa zmajevima - deo prvi: Snovi i prah",
+                username: "rajka",
+                grade: 5,
+                text: "Praktično obožavam SVE u vezi ovog serijala, i moj život je upropašćen jer i dalje nema naznake kada nas očekuje sledeći nastavak! Da, to je moj ceo komentar, upravo ovde. Možete da idete sada. Ozbiljno, nemam ideju šta da kažem o ovako fantastičnom serijalu. Izgrađen je jedan neverovatan svet, i zaista mi je bilo stalo do većine likova, čak mi je stalo i do likova koji ne bi trebalo da nam se dopadnu. Odlagala sam čitanje, jer sam znala da je ovo poslednja objavljena knjiga, pročitala sam ih sve vrlo brzo, i šta sada da radim sa svojim životom?! Ovde pratimo Džona, koji je moj najomiljeniji lik ikada i u ovom delu ima ogromnu odgovornost, Tiriona koga potpuno i trajno obožavam (ne ostane li živ u narednim delovima, obećavam da ću pronaći pisca lično!), Deneris (kako je samo mogla da zaključa svoje zmajeve, pobogu!), i druge. Zaljubljena sam u ovaj serijal, kada uronim u čitanje, čitav svet nestane. Tako da, šta sada da radim sa svojim životom? Možda bih mogla da nabavim bojanku."
+            }
+        ],
         isOnPromotion: false,
     },
     {
@@ -169,7 +188,7 @@ var bookList: Array<Book> = [
         image: "ples_sa_zmajevima_2",
         yearPublished: "2012.",
         numberOfPages: "592",
-        averageGrade: "",
+        averageGrade: 0,
         commentList: [],
         isOnPromotion: false,
     },
@@ -192,7 +211,7 @@ var bookList: Array<Book> = [
         image: "ponovorodjeni_zmaj",
         yearPublished: "2004.",
         numberOfPages: "576",
-        averageGrade: "",
+        averageGrade: 0,
         commentList: [],
         isOnPromotion: false,
     },
@@ -228,7 +247,7 @@ var bookList: Array<Book> = [
         image: "pored_puta",
         yearPublished: "2018.",
         numberOfPages: "824",
-        averageGrade: "",
+        averageGrade: 0,
         commentList: [],
         isOnPromotion: false,
     },
@@ -250,7 +269,7 @@ var bookList: Array<Book> = [
         image: "price",
         yearPublished: "2004.",
         numberOfPages: "850",
-        averageGrade: "2017",
+        averageGrade: 0,
         commentList: [],
         isOnPromotion: false,
     },
@@ -274,7 +293,7 @@ var bookList: Array<Book> = [
         image: "romani",
         yearPublished: "2014.",
         numberOfPages: "776",
-        averageGrade: "",
+        averageGrade: 0,
         commentList: [],
         isOnPromotion: false,
     },
@@ -292,7 +311,7 @@ var bookList: Array<Book> = [
         image: "sudar_kraljeva",
         yearPublished: "2004.",
         numberOfPages: "750",
-        averageGrade: "",
+        averageGrade: 0,
         commentList: [],
         isOnPromotion: false,
     },
@@ -310,7 +329,7 @@ var bookList: Array<Book> = [
         image: "zenica_sveta",
         yearPublished: "2021.",
         numberOfPages: "615",
-        averageGrade: "",
+        averageGrade: 0,
         commentList: [],
         isOnPromotion: false,
     },
@@ -342,7 +361,7 @@ var bookList: Array<Book> = [
         image: "euforija",
         yearPublished: "2022.",
         numberOfPages: "296",
-        averageGrade: "",
+        averageGrade: 0,
         commentList: [],
         isOnPromotion: true,
     },
@@ -382,7 +401,7 @@ var bookList: Array<Book> = [
         image: "oladi_malo",
         yearPublished: "2022.",
         numberOfPages: "272",
-        averageGrade: "",
+        averageGrade: 0,
         commentList: [],
         isOnPromotion: true,
     },
@@ -412,9 +431,9 @@ var bookList: Array<Book> = [
         image: "sluzba_2",
         yearPublished: "2022.",
         numberOfPages: "208",
-        averageGrade: "",
+        averageGrade: 0,
         commentList: [],
-        isOnPromotion: true,
+        isOnPromotion: false,
     },
 ]
 
@@ -438,19 +457,23 @@ const bookModel = () => {
         return true;
     }
 
-    const commentBook = (bookId: number, comment: BookComment) => {
-        for (let i = 0; i < bookList.length; i++) {
+    const commentBook = (bookId: number, comment: BookComment): Book => {
+        let i = 0;
+        for (; i < bookList.length; i++) {
             if(bookList[i].id == bookId) {
                 bookList[i].commentList.push(comment);
                 bookList[i].averageGrade += comment.grade;
+                break;
             }
         }
+
+        return bookList[i];
     }
 
-    const setPromotion = (bookId: number, isOnPromotion: boolean) => {
+    const togglePromotion = (bookId: number) => {
         for (let i = 0; i < bookList.length; i++) {
             if(bookList[i].id == bookId) {
-                bookList[i].isOnPromotion = isOnPromotion;
+                bookList[i].isOnPromotion = !bookList[i].isOnPromotion;
             }
         }
     }
@@ -459,7 +482,7 @@ const bookModel = () => {
         return bookList.filter(book => book.isOnPromotion);
     }
 
-    return {getBookList, getBookById, addBook, commentBook, getBooksOnPromotion}
+    return {getBookList, getBookById, addBook, commentBook, getBooksOnPromotion, togglePromotion}
 }
 
 export {bookModel}

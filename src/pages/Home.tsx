@@ -2,7 +2,7 @@ import {Component, createEffect, createSignal, For, Show} from "solid-js";
 import {Button, Carousel, Col, Container, Form, FormControl, Row} from "solid-bootstrap";
 import {Book, bookModel} from "../models/books";
 import {User} from "../models/users";
-import {fetchUser} from "./Header";
+import {fetchUser, setUrl} from "./Header";
 
 const [userType, setUserType] = createSignal<string>("customer");
 
@@ -100,12 +100,12 @@ const Home: Component = () => {
                 <Container style={"margin-top: 40px;text-align:center;"}>
                     <Carousel activeIndex={index()} onSelect={handleSelect}>
                         <Carousel.Item>
-                            <img src={"src/assets/books/promotions/banner_1.jpeg"} alt="baner_1"/>
+                            <img class="img-fluid" src={"src/assets/books/promotions/banner_1.jpeg"} alt="baner_1"/>
                         </Carousel.Item>
                         <For each={booksOnPromotion()}>{book =>
                             <Carousel.Item>
                                 <a href={"/books/" + book.id}>
-                                    <img src={"src/assets/books/promotions/" + book.image + ".png"} alt={book.image}/>
+                                    <img class="img-fluid" src={"src/assets/books/promotions/" + book.image + ".png"} alt={book.image}/>
                                 </a>
                             </Carousel.Item>
                         }</For>
@@ -125,7 +125,7 @@ const Home: Component = () => {
                                 <Col class="ml-3">
                                     <div class="card text-center">
                                         <div class="card-body">
-                                            <a href={"/books/" + bookList()[index()].id}>
+                                            <a href={"/books/" + bookList()[index()].id} onClick={() => setUrl(`/books/${bookList()[index()].id}`)}>
                                                 <img
                                                     class="img-fluid"
                                                     src={"/src/assets/books/" + bookList()[index()].image + ".jpeg"}
@@ -133,7 +133,11 @@ const Home: Component = () => {
                                                     style={"padding:10px;;width:150px;height:220px;"}
                                                 />
                                             </a>
-                                            <p style="font-size:20px"><a style={"text-decoration:none;color:black;"} href={"/books/" + bookList()[index()].id}>{bookList()[index()].title}</a></p>
+                                            <p style="font-size:20px">
+                                                <a style={"text-decoration:none;color:black;"} href={"/books/" + bookList()[index()].id} onClick={() => setUrl(`/books/${bookList()[index()].id}`)}>
+                                                    {bookList()[index()].title}
+                                                </a>
+                                            </p>
                                             <p>{bookList()[index()].author}</p>
                                         </div>
                                     </div>
@@ -143,7 +147,7 @@ const Home: Component = () => {
                                 <Col>
                                     <div class="card text-center">
                                         <div class="card-body">
-                                            <a href={"/books/" + bookList()[index()+ 1].id}>
+                                            <a href={"/books/" + bookList()[index()+ 1].id} onClick={() => setUrl(`/books/${bookList()[index() + 1].id}`)}>
                                                 <img
                                                     class="img-fluid"
                                                     src={"/src/assets/books/" + bookList()[index() + 1].image + ".jpeg"}
@@ -151,7 +155,11 @@ const Home: Component = () => {
                                                     style={"padding:10px;;width:150px;height:220px;"}
                                                 />
                                             </a>
-                                            <p style="font-size:20px"><a style={"text-decoration:none;color:black;"} href={"/books/" + bookList()[index()+ 1].id}>{bookList()[index() + 1].title}</a></p>
+                                            <p style="font-size:20px">
+                                                <a style={"text-decoration:none;color:black;"} href={"/books/" + bookList()[index()+ 1].id}  onClick={() => setUrl(`/books/${bookList()[index() + 1].id}`)}>
+                                                    {bookList()[index() + 1].title}
+                                                </a>
+                                            </p>
                                             <p>{bookList()[index() + 1].author}</p>
                                         </div>
                                     </div>
@@ -161,7 +169,7 @@ const Home: Component = () => {
                                 <Col>
                                     <div class="card text-center style">
                                         <div class="card-body">
-                                            <a href={"/books/" + bookList()[index()+ 2].id}>
+                                            <a href={"/books/" + bookList()[index()+ 2].id} onClick={() => setUrl(`/books/${bookList()[index() + 2].id}`)}>
                                                 <img
                                                     class="img-fluid"
                                                     src={"/src/assets/books/" + bookList()[index() + 2].image + ".jpeg"}
@@ -169,7 +177,11 @@ const Home: Component = () => {
                                                     style={"padding:10px;;width:150px;height:220px;"}
                                                 />
                                             </a>
-                                            <p style="font-size:20px"><a style={"text-decoration:none;color:black;"} href={"/books/" + bookList()[index() + 2].id}>{bookList()[index() + 2].title}</a></p>
+                                            <p style="font-size:20px">
+                                                <a style={"text-decoration:none;color:black;"} href={"/books/" + bookList()[index() + 2].id}  onClick={() => setUrl(`/books/${bookList()[index() + 2].id}`)}>
+                                                    {bookList()[index() + 2].title}
+                                                </a>
+                                            </p>
                                             <p>{bookList()[index() + 2].author}</p>
                                         </div>
                                     </div>
