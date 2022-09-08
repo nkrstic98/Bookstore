@@ -42,6 +42,7 @@ const registerForm = () => {
             phone: form.phone,
             address: form.address,
             type: userType,
+            recommendations: [],
         }
 
         let isUserRegistered = userRegister(user);

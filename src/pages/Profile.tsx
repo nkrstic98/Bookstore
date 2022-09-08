@@ -78,6 +78,7 @@ const Profile: Component = () => {
         phone: "",
         address: "",
         type: "",
+        recommendations: [],
     });
     const { form, setForm, updateFormField, submit, clearField } = updateProfileForm();
     const [validated, setValidated] = createSignal(false);

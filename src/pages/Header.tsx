@@ -18,7 +18,6 @@ export function deleteUser() {
 
 export function setUrl(url: string) {
     setRoute(url);
-    console.log(route());
 }
 
 const [user, setUser] = createSignal<User|null>(null);

@@ -2,7 +2,7 @@ import {Component, createSignal, For, onMount, Show} from "solid-js";
 import {useNavigate, useParams} from "@solidjs/router";
 import {Book, BookComment, bookModel} from "../models/books";
 import {Col, Container, Form, Modal, Row, Tab, Tabs} from "solid-bootstrap";
-import {User} from "../models/users";
+import {User, userModel} from "../models/users";
 import {createStore} from "solid-js/store";
 import {Button} from "solid-bootstrap";
 import {FormGroup, InputGroup} from "solid-bootstrap";
@@ -78,9 +78,12 @@ const commentForm = () => {
 
 const BookDetails: Component = () => {
     const [commentList, setCommentList] = createStore<BookComment[]>([]);
+    const [userList, setUserList] = createStore<User[]>([]);
+    const [recommendationList, setRecommendationList] = createStore<string[]>([]);
 
     const navigation = useNavigate();
     const {getBookById, togglePromotion} = bookModel();
+    const { getUsers, recommendBook } = userModel();
 
     const [username, setUsername] = createSignal<string>("");
     const [userType, setUserType] = createSignal<string>("");
@@ -158,60 +161,123 @@ const BookDetails: Component = () => {
         }
     };
 
+    const toggleRecommendation = (username: string) => {
+        let foundUsername = recommendationList.find(u => u == username);
+        if(foundUsername != undefined) {
+            setRecommendationList(recommendationList.filter(u => u != username));
+        }
+        else {
+            setRecommendationList([...recommendationList, username]);
+        }
+        console.log(recommendationList);
+    }
+
+    const applyRecommendation = () => {
+        for (const user of recommendationList) {
+            recommendBook(user, book().id, username())
+        }
+    }
+
     return (
         <>
             <Modal show={show()} onHide={handleClose}>
-                <Form noValidate validated={validated()} onSubmit={handleSubmit}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Vaše mišljenje nam veoma znači</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <FormGroup controlId="validationCustomGrade">
-                            <Form.Label>Ocena</Form.Label>
-                            <Form.Select onChange={updateFormField("grade")}>
-                                <option value={"5"}>5</option>
-                                <option value={"4"}>4</option>
-                                <option value={"3"}>3</option>
-                                <option value={"2"}>2</option>
-                                <option value={"1"}>1</option>
-                            </Form.Select>
-                        </FormGroup>
-                        <Form.Group class="mt-4" controlId="validationCustomTitle">
-                            <Form.Label>Komentar</Form.Label>
-                            <InputGroup hasValidation>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Naslov komentara"
-                                    value={form.title}
-                                    onChange={updateFormField("title")}
-                                    required
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                    Molimo Vas unesite naslov komentara
-                                </Form.Control.Feedback>
-                            </InputGroup>
-                        </Form.Group>
-                        <Form.Group controlId="validationCustomText" class="mt-3">
-                            <InputGroup hasValidation>
-                                <Form.Control
-                                    as="textarea"
-                                    rows={6}
-                                    placeholder="Unesite tekst komentara..."
-                                    value={form.text}
-                                    onChange={updateFormField("text")}
-                                    required
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                    Molimo Vas unesite tekst komentara
-                                </Form.Control.Feedback>
-                            </InputGroup>
-                        </Form.Group>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>Odustani</Button>
-                        <Button variant="success" type="submit">Pošalji</Button>
-                    </Modal.Footer>
-                </Form>
+                <Show when={!isRecommendModal()} fallback={
+                    <>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Uživajte u knjizi sa svojim prijateljima!</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Form>
+                                <table class="table table-striped" style={"width: 100%;"}>
+                                    <thead>
+                                    <tr>
+                                        <th colSpan={2} class="text-center">Kome želite da preporučite knjigu?</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <For each={userList}>{user =>
+                                        <Show when={user.username != username() && user.type != "admin"}>
+                                            <tr>
+                                                <td class="text-center" style={"vertical-align: baseline;"}>{user.username}</td>
+                                                <td style={"vertical-align: baseline;"}>
+                                                    <Form.Group controlId="validationCustom14">
+                                                        <Form.Check
+                                                            type="checkbox"
+                                                            id="custom-checkbox"
+                                                            onChange={() => {
+                                                                toggleRecommendation(user.username)
+                                                            }}
+                                                        />
+                                                    </Form.Group>
+                                                </td>
+                                            </tr>
+                                        </Show>
+                                    }</For>
+                                    </tbody>
+                                </table>
+                            </Form>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>Odustani</Button>
+                            <Button variant="success" onClick={() => {
+                                applyRecommendation();
+                                handleClose();
+                            }}>Preporuči</Button>
+                        </Modal.Footer>
+                    </>
+                }>
+                    <Form noValidate validated={validated()} onSubmit={handleSubmit}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Vaše mišljenje nam veoma znači</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <FormGroup controlId="validationCustomGrade">
+                                <Form.Label>Ocena</Form.Label>
+                                <Form.Select onChange={updateFormField("grade")}>
+                                    <option value={"5"}>5</option>
+                                    <option value={"4"}>4</option>
+                                    <option value={"3"}>3</option>
+                                    <option value={"2"}>2</option>
+                                    <option value={"1"}>1</option>
+                                </Form.Select>
+                            </FormGroup>
+                            <Form.Group class="mt-4" controlId="validationCustomTitle">
+                                <Form.Label>Komentar</Form.Label>
+                                <InputGroup hasValidation>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Naslov komentara"
+                                        value={form.title}
+                                        onChange={updateFormField("title")}
+                                        required
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        Molimo Vas unesite naslov komentara
+                                    </Form.Control.Feedback>
+                                </InputGroup>
+                            </Form.Group>
+                            <Form.Group controlId="validationCustomText" class="mt-3">
+                                <InputGroup hasValidation>
+                                    <Form.Control
+                                        as="textarea"
+                                        rows={6}
+                                        placeholder="Unesite tekst komentara..."
+                                        value={form.text}
+                                        onChange={updateFormField("text")}
+                                        required
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        Molimo Vas unesite tekst komentara
+                                    </Form.Control.Feedback>
+                                </InputGroup>
+                            </Form.Group>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>Odustani</Button>
+                            <Button variant="success" type="submit">Pošalji</Button>
+                        </Modal.Footer>
+                    </Form>
+                </Show>
             </Modal>
 
             <Container style={"margin-top: 40px;text-align:center;"}>
@@ -239,6 +305,7 @@ const BookDetails: Component = () => {
                                         onClick={() => {
                                             handleOpen();
                                             setIsRecommendModal(true);
+                                            setUserList(getUsers());
                                         }
                                 }>
                                     Preporuči knjigu

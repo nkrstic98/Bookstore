@@ -7,7 +7,13 @@ type User = {
     phone: string;
     address: string;
     type: string;
+    recommendations: Recommendation[];
 };
+
+type Recommendation = {
+    bookId: number;
+    recommender: string;
+}
 
 var userList: Array<User> = [
     {
@@ -19,6 +25,7 @@ var userList: Array<User> = [
         phone: "063348946",
         address: "Mihajla Petrovica Alasa 9/7 Pancevo",
         type: "admin",
+        recommendations: [],
     },
     {
         firstname: "Katarina",
@@ -29,6 +36,18 @@ var userList: Array<User> = [
         phone: "0648674945",
         address: "Mihajla Petrovica Alasa 9/7 Pancevo",
         type: "customer",
+        recommendations: [],
+    },
+    {
+        firstname: "Suzana",
+        lastname: "Ostojic",
+        email: "suzana.ostojic@gmail.com",
+        username: "suky98",
+        password: "suzana.ostojic",
+        phone: "",
+        address: "",
+        type: "customer",
+        recommendations: [],
     },
 ]
 
@@ -79,7 +98,38 @@ const userModel = () => {
         console.log(userList);
     }
 
-    return { userLogin, userRegister, userUpdate, userDelete }
+    const getUsers = () => {
+        return userList;
+    }
+
+    const recommendBook = (username: string, bookId: number, recommender: string) => {
+        if(recommendationExists(username, recommender, bookId)) {
+            return;
+        }
+
+        for (let i = 0; i < userList.length; i++) {
+            if(userList[i].username == username) {
+                userList[i].recommendations.push({
+                    bookId: bookId,
+                    recommender: recommender
+                })
+                console.log(userList);
+                return;
+            }
+        }
+    }
+
+    const recommendationExists = (username: string, recommender: string, bookId: number) : boolean => {
+        let user = userList.find(u => u.username == username);
+        if (user == undefined) {
+            return false;
+        }
+
+        let recommendation = user.recommendations.find(r => r.recommender == recommender && r.bookId == bookId);
+        return recommendation != undefined;
+    }
+
+    return { userLogin, userRegister, userUpdate, userDelete, getUsers, recommendBook }
 }
 
 export {userModel};
