@@ -1,8 +1,9 @@
-import {Component, createEffect, createSignal, For, Show} from "solid-js";
+import {Component, createEffect, createSignal, For, onMount, Show} from "solid-js";
 import {Button, Carousel, Col, Container, Form, FormControl, Row} from "solid-bootstrap";
 import {Book, bookModel} from "../models/books";
 import {User} from "../models/users";
 import {fetchUser, setUrl} from "./Header";
+import {useLocation} from "@solidjs/router";
 
 const [userType, setUserType] = createSignal<string>("customer");
 
@@ -16,6 +17,11 @@ const Home: Component = () => {
     const [booksOnPromotion, setBooksOnPromotion] = createSignal<Book[]>([]);
     const [bookList, setBookList] = createSignal<Book[]>([]);
     const [searchCriteria, setSearchCriteria] = createSignal("");
+
+    onMount(() => {
+        const location = useLocation();
+        setUrl(location.pathname);
+    })
 
     createEffect(() => {
         fetchUser();

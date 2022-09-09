@@ -47,7 +47,20 @@ var userList: Array<User> = [
         phone: "",
         address: "",
         type: "customer",
-        recommendations: [],
+        recommendations: [
+            {
+                bookId: 1,
+                recommender: "kacak04"
+            },
+            {
+                bookId: 2,
+                recommender: "kacak04"
+            },
+            {
+                bookId: 3,
+                recommender: "kacak04"
+            },
+        ],
     },
 ]
 

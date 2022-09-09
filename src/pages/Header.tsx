@@ -61,13 +61,13 @@ const Header: Component = () => {
                     <Show
                         when={user() != null && user().type == ADMIN}
                     >
-                        <Nav.Link active={route() == "add-book"} href="/add-book" onClick={() => setRoute("add-book")}>Dodavanje knjiga</Nav.Link>
-                        <Nav.Link active={route() == "register-user"} href="/register-user" onClick={() => setRoute("register-user")}>Registracija korisnika</Nav.Link>
+                        <Nav.Link active={route() == "/add-book"} href="/add-book" onClick={() => setRoute("add-book")}>Dodavanje knjiga</Nav.Link>
+                        <Nav.Link active={route() == "/register-user"} href="/register-user" onClick={() => setRoute("register-user")}>Registracija korisnika</Nav.Link>
                     </Show>
                     <Show
                         when={user() != null && user().type == CUSTOMER}
                     >
-                        <Nav.Link active={route() == "recommendations"} href="/recommendations" onClick={() => setRoute("recommendations")}>Preporuke</Nav.Link>
+                        <Nav.Link active={route() == "/recommendations"} href="/recommendations" onClick={() => setRoute("recommendations")}>Preporuke</Nav.Link>
                     </Show>
                 </Nav>
                 <Form class="">

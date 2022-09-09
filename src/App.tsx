@@ -7,6 +7,7 @@ const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
 const Profile = lazy(() => import("./pages/Profile"));
 const BookDetails = lazy(() => import("./pages/BookDetails"));
+const Recommendations = lazy(() => import("./pages/Recommendations"));
 
 const App: Component = () => {
     return (
@@ -19,7 +20,8 @@ const App: Component = () => {
                 <Route path="/register" component={Register} />
                 <Route path="/register-user" component={Register} />
                 <Route path="/profile" component={Profile} />
-                <Route path="books/:id" component={BookDetails} />
+                <Route path="/books/:id" component={BookDetails} />
+                <Route path={"/recommendations"} component={Recommendations} />
             </Routes>
         </>
     );
