@@ -1,8 +1,8 @@
 import {User, userModel} from "../models/users";
 import {createStore} from "solid-js/store";
-import {Component, createEffect, createSignal, Show} from "solid-js";
+import {Component, createEffect, createSignal, onMount, Show} from "solid-js";
 import {Alert, Button, Card, Col, Container, Form, Row} from "solid-bootstrap";
-import {fetchUser} from "./Header";
+import {fetchUser, setUrl} from "./Header";
 import {useLocation, useNavigate} from "@solidjs/router";
 
 type RegisterFormFields = {
@@ -79,13 +79,22 @@ const registerForm = () => {
 const Register: Component = () => {
     const location = useLocation();
     const navigation = useNavigate();
-    const [validated, setValidated] = createSignal(false);
-    const [registerAttempted, setRegisterAttempted] = createSignal(false);
-    const [doPasswordMatch, setDoPasswordMatch] = createSignal(true);
-    const [isAdmin, setIsAdmin] = createSignal(false);
-    const [isUserRegistered, setIsUserRegistered] = createSignal(false);
-    const [user, setUser] = createSignal<User|null>(null);
+
     const { form, updateFormField, submit, clearField } = registerForm();
+
+    const [validated, setValidated] = createSignal(false);
+
+    const [doPasswordMatch, setDoPasswordMatch] = createSignal(true);
+    const [isRegisterNotSuccessful, setIsRegisterNotSuccessful] = createSignal(false);
+    const [isUserRegistered, setIsUserRegistered] = createSignal(false);
+
+    const [isAdmin, setIsAdmin] = createSignal(false);
+    const [user, setUser] = createSignal<User|null>(null);
+
+    onMount(() => {
+        const location = useLocation();
+        setUrl(location.pathname);
+    })
 
     createEffect(() => {
         let user = localStorage.getItem("user");
@@ -118,21 +127,33 @@ const Register: Component = () => {
             }
 
             let newUser = submit(form, userType);
-            if(user() == null) {
-                setUser(newUser);
-                if(user() != null) {
+            if(newUser == null) {
+                setIsRegisterNotSuccessful(true);
+                clearField("email");
+                clearField("username");
+                clearField("password");
+                clearField("confirmPassword");
+            }
+            else {
+                if(user() == null) {
                     localStorage.setItem("user", JSON.stringify(user()));
                     fetchUser();
                     navigation("/");
                 }
                 else {
-                    setRegisterAttempted(true);
+                    setIsUserRegistered(true);
+
+                    clearField("firstname");
+                    clearField("lastname");
+                    clearField("email");
+                    clearField("username");
                     clearField("password");
                     clearField("confirmPassword");
+                    clearField("phone");
+                    clearField("address");
+                    setIsAdmin(false);
                 }
             }
-
-            setIsUserRegistered(true);
         }
     };
 
@@ -141,31 +162,27 @@ const Register: Component = () => {
             <Row>
                 <Col/>
                 <Col xs={8}>
-                    <Show when={isUserRegistered()}>
-                        <Alert variant="success" dismissible>
-                            Uspesno ste registrovali korisnika!
+                    <Show when={!doPasswordMatch()}>
+                        <Alert variant="danger" dismissible onClose={() => setDoPasswordMatch(false)}>
+                            Lozinka i potvrda lozinke se ne poklapaju! Pokusajte ponovo...
                         </Alert>
                     </Show>
+                    <Show when={isRegisterNotSuccessful()}>
+                        <Alert variant="danger" dismissible onClose={() => setIsRegisterNotSuccessful(false)}>
+                            Email ili korisnicko ime su povezani sa postojecim nalogom! Pokusajte ponovo...
+                        </Alert>
+                    </Show>
+                    <Show when={isUserRegistered()}>
+                        <Alert variant="success" dismissible onClose={() => setIsUserRegistered(false)}>
+                            Uspešno ste registrovali novog korisnika!
+                        </Alert>
+                    </Show>
+
                     <br/>
                     <Card>
                         <Card.Body>
                             <p class="text-secondary mb-3" style={"font-size: 13px;"}>Polja oznacena zvezdicom (*) su obavezna</p>
                             <Form noValidate validated={validated()} onSubmit={handleSubmit}>
-                                <Show
-                                    when={user() == null && registerAttempted()}
-                                >
-                                    <Form.Group class="mb-4" style={"text-align:center;"} controlId="validationCustom11">
-                                        <p class="text-danger">{"Email ili korisnicno ime su povezani sa postojecim nalogom!"}</p>
-                                    </Form.Group>
-                                </Show>
-                                <Show
-                                    when={!doPasswordMatch()}
-                                >
-                                    <Form.Group class="mb-4" style={"text-align:center;"} controlId="validationCustom11">
-                                        <p class="text-danger">{"Lozinka i potvrda lozinke se ne poklapaju. Pokusajte ponovo"}</p>
-                                    </Form.Group>
-                                </Show>
-
                                 <Row class="mb-3">
                                     <Form.Group as={Col} controlId="validationCustom01">
                                         <Form.Label>Ime*</Form.Label>
@@ -290,6 +307,7 @@ const Register: Component = () => {
                                                 onChange={() => {
                                                     setIsAdmin(!isAdmin());
                                                 }}
+                                                checked={isAdmin()}
                                             />
                                         </Form.Group>
                                     </Row>

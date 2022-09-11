@@ -1,7 +1,7 @@
 import {User, userModel} from "../models/users";
 import {createStore} from "solid-js/store";
 import {Component, createEffect, createSignal, Show} from "solid-js";
-import {Button, Card, Col, Container, Form, Modal, Row} from "solid-bootstrap";
+import {Alert, Button, Card, Col, Container, Form, Modal, Row} from "solid-bootstrap";
 import {deleteUser} from "./Header";
 import {useNavigate} from "@solidjs/router";
 
@@ -82,7 +82,7 @@ const Profile: Component = () => {
     });
     const { form, setForm, updateFormField, submit, clearField } = updateProfileForm();
     const [validated, setValidated] = createSignal(false);
-    const [updateAttempted, setUpdateAttempted] = createSignal(false);
+    const [isUpdateSuccessful, setIsUpdateSuccessful] = createSignal(false);
     const [doPasswordMatch, setDoPasswordMatch] = createSignal(true);
 
     const [show, setShow] = createSignal(false);
@@ -129,6 +129,7 @@ const Profile: Component = () => {
 
             let isUpdateSuccessful = submit(form.email, form.firstname, form.lastname, form.address, form.phone, password);
             if(isUpdateSuccessful) {
+                setIsUpdateSuccessful(true);
                 let updatedUser = localStorage.getItem("user");
                 if(updatedUser != null) {
                     setUser(JSON.parse(updatedUser));
@@ -137,9 +138,6 @@ const Profile: Component = () => {
                 setIsPasswordEnabled(false);
                 setIsCheckboxEnabled(false);
                 setDoPasswordMatch(true);
-            }
-            else {
-                setUpdateAttempted(true);
             }
 
             clearField("password");
@@ -157,7 +155,6 @@ const Profile: Component = () => {
             address: user().address,
         });
         setIsUpdateEnabled(false);
-        setUpdateAttempted(false);
         setIsPasswordEnabled(false);
         setIsCheckboxEnabled(false);
     }
@@ -188,6 +185,11 @@ const Profile: Component = () => {
                 <Row>
                     <Col/>
                     <Col xs={8}>
+                        <Show when={isUpdateSuccessful()}>
+                            <Alert variant="success" dismissible onClose={() => setIsUpdateSuccessful(false)}>
+                                Uspesno ste ažurirali svoje podatke!
+                            </Alert>
+                        </Show>
                         <Card>
                             <Card.Body>
                                 <Form noValidate validated={validated()} onSubmit={handleSubmit}>

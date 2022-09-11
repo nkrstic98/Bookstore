@@ -1,7 +1,7 @@
 import {Component, createSignal, For, onMount, Show} from "solid-js";
 import {useNavigate, useParams} from "@solidjs/router";
 import {Book, BookComment, bookModel} from "../models/books";
-import {Col, Container, Form, Modal, Row, Tab, Tabs} from "solid-bootstrap";
+import {Alert, Col, Container, Form, Modal, Row, Tab, Tabs} from "solid-bootstrap";
 import {User, userModel} from "../models/users";
 import {createStore} from "solid-js/store";
 import {Button} from "solid-bootstrap";
@@ -80,6 +80,7 @@ const BookDetails: Component = () => {
     const [commentList, setCommentList] = createStore<BookComment[]>([]);
     const [userList, setUserList] = createStore<User[]>([]);
     const [recommendationList, setRecommendationList] = createStore<string[]>([]);
+    const [isBookOnPromotion, setIsBookOnPromotion] = createSignal<boolean>(false);
 
     const navigation = useNavigate();
     const {getBookById, togglePromotion} = bookModel();
@@ -109,6 +110,7 @@ const BookDetails: Component = () => {
     const handleClose = () => setShow(false);
 
     const [isRecommendModal, setIsRecommendModal] = createSignal(false);
+    const [shouldShowAlert, setShouldShowAlert] = createSignal(false);
 
     const fetchUser = () => {
         let fetchedUser = localStorage.getItem("user");
@@ -136,6 +138,7 @@ const BookDetails: Component = () => {
         }
 
         setBook(book);
+        setIsBookOnPromotion(book.isOnPromotion);
         setCommentList(book.commentList);
         setBookGrade(book.averageGrade / book.commentList.length);
     })
@@ -176,6 +179,12 @@ const BookDetails: Component = () => {
         for (const user of recommendationList) {
             recommendBook(user, book().id, username())
         }
+    }
+
+    const updatePromotion = (bookId: number) => {
+        togglePromotion(bookId);
+        setIsBookOnPromotion(!isBookOnPromotion());
+        setShouldShowAlert(true);
     }
 
     return (
@@ -281,6 +290,17 @@ const BookDetails: Component = () => {
             </Modal>
 
             <Container style={"margin-top: 40px;text-align:center;"}>
+                <Show when={shouldShowAlert()}>
+                    <Row>
+                        <Col/>
+                        <Col>
+                            <Alert variant="success" dismissible onClose={() => setShouldShowAlert(false)}>
+                                Uspesno ste ažurirali status promocije.
+                            </Alert>
+                        </Col>
+                        <Col/>
+                    </Row>
+                </Show>
                 <Row>
                     <Col>
                         <img src={"/src/assets/books/" + book().image + ".jpeg"} alt={book().image} style={"height:350px"}/>
@@ -311,11 +331,9 @@ const BookDetails: Component = () => {
                                     Preporuči knjigu
                                 </button>
                             }>
-                                <Form>
-                                    <Show when={book().isOnPromotion} fallback={<button type="submit" class="btn btn-outline-success" onClick={() => togglePromotion(book().id)}>Postavi promociju</button>}>
-                                        <button class="btn btn-outline-danger" type="submit" onClick={() => togglePromotion(book().id)}>Ukloni promociju</button> <br/>
-                                    </Show>
-                                </Form>
+                                <Show when={isBookOnPromotion()} fallback={<button class="btn btn-outline-success" onClick={() => updatePromotion(book().id)}>Postavi promociju</button>}>
+                                    <button class="btn btn-outline-danger" onClick={() => updatePromotion(book().id)}>Ukloni promociju</button> <br/>
+                                </Show>
                             </Show>
                         </Show>
                     </Col>
