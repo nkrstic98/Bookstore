@@ -1,5 +1,5 @@
 type Book = {
-    id: number;
+    id?: number;
     title: string;
     author: string;
     description: string;
@@ -452,6 +452,7 @@ const bookModel = () => {
             return false;
         }
 
+        book.id = bookList.length + 1;
         bookList.push(book);
 
         return true;

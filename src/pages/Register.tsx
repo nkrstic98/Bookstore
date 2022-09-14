@@ -164,12 +164,12 @@ const Register: Component = () => {
                 <Col xs={8}>
                     <Show when={!doPasswordMatch()}>
                         <Alert variant="danger" dismissible onClose={() => setDoPasswordMatch(false)}>
-                            Lozinka i potvrda lozinke se ne poklapaju! Pokusajte ponovo...
+                            Lozinka i potvrda lozinke se ne poklapaju! Pokušajte ponovo...
                         </Alert>
                     </Show>
                     <Show when={isRegisterNotSuccessful()}>
                         <Alert variant="danger" dismissible onClose={() => setIsRegisterNotSuccessful(false)}>
-                            Email ili korisnicko ime su povezani sa postojecim nalogom! Pokusajte ponovo...
+                            Email ili korisnicko ime su povezani sa postojecim nalogom! Pokušajte ponovo...
                         </Alert>
                     </Show>
                     <Show when={isUserRegistered()}>
